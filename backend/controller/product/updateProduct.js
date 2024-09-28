@@ -1,32 +1,63 @@
-const uploadProductPermission = require('../../helpers/permission')
-const productModel = require('../../models/productModel')
+// const uploadProductPermission = require('../../helpers/permission')
+// const productModel = require('../../models/productModel')
 
-async function updateProductController(req,res){
-    try{
+// async function updateProductController(req,res){
+//     try{
 
-        if(!uploadProductPermission(req.userId)){
-            throw new Error("Permission denied")
-        }
+//         if(!uploadProductPermission(req.userId)){
+//             throw new Error("Permission denied")
+//         }
 
-        const { _id, ...resBody} = req.body
+//         const { _id, ...resBody} = req.body
 
-        const updateProduct = await productModel.findByIdAndUpdate(_id,resBody)
+//         const updateProduct = await productModel.findByIdAndUpdate(_id,resBody)
         
-        res.json({
-            message : "Product update successfully",
-            data : updateProduct,
-            success : true,
-            error : false
-        })
+//         res.json({
+//             message : "Product update successfully",
+//             data : updateProduct,
+//             success : true,
+//             error : false
+//         })
 
-    }catch(err){
-        res.status(400).json({
-            message : err.message || err,
-            error : true,
-            success : false
-        })
+//     }catch(err){
+//         res.status(400).json({
+//             message : err.message || err,
+//             error : true,
+//             success : false
+//         })
+//     }
+// }
+
+
+// module.exports = updateProductController
+
+
+import uploadProductPermission from '../../helpers/permission';
+import productModel from '../../models/productModel';
+
+const updateProductController = async (req, res) => {
+  try {
+    if (!uploadProductPermission(req.userId)) {
+      throw new Error('Permission denied');
     }
-}
 
+    const { _id, ...resBody } = req.body;
 
-module.exports = updateProductController
+    const updateProduct = await productModel.findByIdAndUpdate(_id, resBody, { new: true });
+
+    res.json({
+      message: 'Product updated successfully',
+      data: updateProduct,
+      success: true,
+      error: false,
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: err.message || err,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+export default updateProductController;

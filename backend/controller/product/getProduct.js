@@ -1,24 +1,47 @@
-const productModel = require("../../models/productModel")
+// const productModel = require("../../models/productModel")
 
-const getProductController = async(req,res)=>{
-    try{
-        const allProduct = await productModel.find().sort({ createdAt : -1 })
+// const getProductController = async(req,res)=>{
+//     try{
+//         const allProduct = await productModel.find().sort({ createdAt : -1 })
 
-        res.json({
-            message : "All Product",
-            success : true,
-            error : false,
-            data : allProduct
-        })
+//         res.json({
+//             message : "All Product",
+//             success : true,
+//             error : false,
+//             data : allProduct
+//         })
 
-    }catch(err){
-        res.status(400).json({
-            message : err.message || err,
-            error : true,
-            success : false
-        })
-    }
+//     }catch(err){
+//         res.status(400).json({
+//             message : err.message || err,
+//             error : true,
+//             success : false
+//         })
+//     }
 
-}
+// }
 
-module.exports = getProductController
+// module.exports = getProductController
+
+import productModel from '../../models/productModel';
+
+const getProductController = async (req, res) => {
+  try {
+    const allProduct = await productModel.find().sort({ createdAt: -1 });
+
+    res.json({
+      message: 'All Products fetched successfully',
+      success: true,
+      error: false,
+      data: allProduct,
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: err.message || err,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+export default getProductController;

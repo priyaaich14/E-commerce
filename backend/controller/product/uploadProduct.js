@@ -1,31 +1,62 @@
-const uploadProductPermission = require("../../helpers/permission")
-const productModel = require("../../models/productModel")
+// const uploadProductPermission = require("../../helpers/permission")
+// const productModel = require("../../models/productModel")
 
-async function UploadProductController(req,res){
-    try{
-        const sessionUserId = req.userId
+// async function UploadProductController(req,res){
+//     try{
+//         const sessionUserId = req.userId
 
-        if(!uploadProductPermission(sessionUserId)){
-            throw new Error("Permission denied")
-        }
+//         if(!uploadProductPermission(sessionUserId)){
+//             throw new Error("Permission denied")
+//         }
     
-        const uploadProduct = new productModel(req.body)
-        const saveProduct = await uploadProduct.save()
+//         const uploadProduct = new productModel(req.body)
+//         const saveProduct = await uploadProduct.save()
 
-        res.status(201).json({
-            message : "Product upload successfully",
-            error : false,
-            success : true,
-            data : saveProduct
-        })
+//         res.status(201).json({
+//             message : "Product upload successfully",
+//             error : false,
+//             success : true,
+//             data : saveProduct
+//         })
 
-    }catch(err){
-        res.status(400).json({
-            message : err.message || err,
-            error : true,
-            success : false
-        })
+//     }catch(err){
+//         res.status(400).json({
+//             message : err.message || err,
+//             error : true,
+//             success : false
+//         })
+//     }
+// }
+
+// module.exports = UploadProductController
+
+import uploadProductPermission from '../../helpers/permission';
+import productModel from '../../models/productModel';
+
+const UploadProductController = async (req, res) => {
+  try {
+    const sessionUserId = req.userId;
+
+    if (!uploadProductPermission(sessionUserId)) {
+      throw new Error('Permission denied');
     }
-}
 
-module.exports = UploadProductController
+    const uploadProduct = new productModel(req.body);
+    const saveProduct = await uploadProduct.save();
+
+    res.status(201).json({
+      message: 'Product uploaded successfully',
+      error: false,
+      success: true,
+      data: saveProduct,
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: err.message || err,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+export default UploadProductController;
